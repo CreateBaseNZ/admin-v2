@@ -40,7 +40,7 @@ const options = {
 
 const LastActive = (props: any) => {
   const [labels, setLabels] = useState<string[]>([
-    moment().subtract(1, 'days').format('ddd, D MMM'),
+    moment().subtract(0, 'days').format('ddd, D MMM'),
   ]);
   const [datasets, setDatasets] = useState<IDataset[]>([
     { label: 'Active Users', data: [0] },

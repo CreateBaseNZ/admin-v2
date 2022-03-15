@@ -59,7 +59,7 @@ export default async function handler(
   const licenses = [];
   for (let i = 0; i < data2.content.length; i++) {
     const license = convertToNormalObject(data2.content[i]);
-    license.group = data3.content.find((group) => {
+    license.group = data3.content.find((group: any) => {
       return group._id.toString() == license.group.toString();
     });
     licenses.push(license);

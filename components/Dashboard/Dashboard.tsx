@@ -14,6 +14,7 @@ type IData = {
 
 const Dashboard = () => {
   const [profiles, setProfiles] = useState<any[]>([]);
+  const [trackings, setTrackings] = useState<any[]>([]);
 
   useEffect(() => {
     axios
@@ -24,10 +25,19 @@ const Dashboard = () => {
       .catch((error) => console.log(error));
   }, []);
 
+  useEffect(() => {
+    axios
+      .post<IData>('/api/fetch-trackings')
+      .then((data) => {
+        setTrackings(data.data.content);
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
   return (
     <>
       <LastActive profiles={profiles} />
-      <UsersStats profiles={profiles} />
+      <UsersStats profiles={profiles} trackings={trackings} />
     </>
   );
 };

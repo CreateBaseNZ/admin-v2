@@ -11,12 +11,21 @@ const UsersStats = (props: any) => {
     .sort((profileA: any, profileB: any) => {
       return +profileB.date.visitedParsed - +profileA.date.visitedParsed;
     });
+
   return (
-    <>
+    <div>
       {sortedProfiles.map((profile: any) => {
-        return <UserStats key={profile._id} profile={profile} />;
+        return (
+          <UserStats
+            key={profile._id}
+            profile={profile}
+            trackings={props.trackings.filter((tracking: any) => {
+              return tracking.profile === profile._id;
+            })}
+          />
+        );
       })}
-    </>
+    </div>
   );
 };
 
