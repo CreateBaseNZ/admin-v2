@@ -6,8 +6,32 @@ import BasicDetails from './BasicDetails';
 import ProjectsEngagement from './ProjectsEngagement';
 
 const UserStats = (props: any) => {
+  let background: string;
+  let text: any;
+  const role = props.profile.saves.recentGroups
+    ? props.profile.licenses[props.profile.saves.recentGroups[0]]?.role
+    : '';
+  switch (role) {
+    case 'admin':
+      background = 'primary';
+      text = 'white';
+      break;
+    case 'teacher':
+      background = 'success';
+      text = 'white';
+      break;
+    case 'student':
+      background = 'light';
+      text = 'dark';
+      break;
+    default:
+      background = 'dark';
+      text = 'white';
+      break;
+  }
+
   return (
-    <Card className="m-4">
+    <Card bg={background} text={text} className="m-4">
       <Card.Body>
         <BasicDetails profile={props.profile} />
       </Card.Body>

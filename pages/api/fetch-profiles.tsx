@@ -18,6 +18,9 @@ export default async function handler(
   const url1 = process.env.PREFIX_BACKEND + '/profile/retrieve';
   const input1 = { query: {}, option: { account: [] } };
   let data1;
+  console.log(process.env.API_KEY_PRIVATE?.toString());
+  console.log(url1);
+  console.log({ ...keys, input: input1 });
   try {
     data1 = (await axios.post(url1, { ...keys, input: input1 }))['data'];
   } catch (error) {

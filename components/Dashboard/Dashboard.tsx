@@ -20,6 +20,7 @@ const Dashboard = () => {
     axios
       .post<IData>('/api/fetch-profiles')
       .then((data) => {
+        console.log(data.data.content);
         setProfiles(data.data.content);
       })
       .catch((error) => console.log(error));
@@ -29,6 +30,7 @@ const Dashboard = () => {
     axios
       .post<IData>('/api/fetch-trackings')
       .then((data) => {
+        console.log(data);
         setTrackings(data.data.content);
       })
       .catch((error) => console.log(error));

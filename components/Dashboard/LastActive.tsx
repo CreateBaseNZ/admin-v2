@@ -26,26 +26,27 @@ ChartJS.register(
   Legend
 );
 
-const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: 'top' as const,
-    },
-    title: {
-      display: true,
-      text: 'Chart.js Bar Chart',
-    },
-  },
-};
-
 const LastActive = (props: any) => {
+  const [title, setTitle] = useState('Loading Chart');
   const [labels, setLabels] = useState<string[]>([
     moment().subtract(0, 'days').format('ddd, D MMM'),
   ]);
   const [datasets, setDatasets] = useState<IDataset[]>([
     { label: 'Active Users', data: [0] },
   ]);
+
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top' as const,
+      },
+      title: {
+        display: true,
+        text: title,
+      },
+    },
+  };
 
   const daysChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newLabels: string[] = [];
@@ -73,6 +74,12 @@ const LastActive = (props: any) => {
         if (labels[i] === lastVisit) newData[i]++;
       }
     }
+    setTitle(
+      `${newData.reduce(
+        (partialSum: number, a: number) => partialSum + a,
+        0
+      )} active users for the past ${labels.length} days`
+    );
     setDatasets([{ label: 'Active Users', data: newData }]);
   }, [labels, props.profiles]);
 
@@ -81,7 +88,7 @@ const LastActive = (props: any) => {
       <Form.Control
         type="number"
         min="1"
-        max="28"
+        max={7 * 26}
         step="1"
         defaultValue="1"
         onChange={daysChangeHandler}

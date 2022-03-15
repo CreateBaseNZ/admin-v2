@@ -14,11 +14,17 @@ const BasicDetails = (props: any) => {
   }
   return (
     <>
-      <Card.Text>{`${props.profile.name.first} ${props.profile.name.last}`}</Card.Text>
+      <Card.Text>{`${props.profile.name.first} ${props.profile.name.last} (${
+        props.profile.account.local
+          ? props.profile.account.local.email
+          : props.profile.account.google.email
+      })`}</Card.Text>
       <Card.Text>
-        {moment(props.profile.date.visited).format(
+        {`${moment(props.profile.date.visited).format(
           'dddd, MMMM Do YYYY, h:mm:ss a'
-        )}
+        )} (visited) | ${moment(props.profile.date.created).format(
+          'dddd, MMMM Do YYYY, h:mm:ss a'
+        )} (created)`}
       </Card.Text>
       <Card.Text>{groupsHTML}</Card.Text>
     </>
