@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Card } from 'react-bootstrap';
+
 import moment from 'moment';
 
 const BasicDetails = (props: any) => {
@@ -11,15 +13,15 @@ const BasicDetails = (props: any) => {
     groupsHTML += `${license.group.name} (${license.role})`;
   }
   return (
-    <div>
-      <p>{`${props.profile.name.first} ${props.profile.name.last}`}</p>
-      <p>
+    <>
+      <Card.Text>{`${props.profile.name.first} ${props.profile.name.last}`}</Card.Text>
+      <Card.Text>
         {moment(props.profile.date.visited).format(
           'dddd, MMMM Do YYYY, h:mm:ss a'
         )}
-      </p>
-      <p>{groupsHTML}</p>
-    </div>
+      </Card.Text>
+      <Card.Text>{groupsHTML}</Card.Text>
+    </>
   );
 };
 

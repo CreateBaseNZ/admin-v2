@@ -10,6 +10,7 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import moment from 'moment';
+import { Form } from 'react-bootstrap';
 
 type IDataset = {
   label: string;
@@ -77,13 +78,15 @@ const LastActive = (props: any) => {
 
   return (
     <div>
-      <input
+      <Form.Control
         type="number"
         min="1"
         max="28"
         step="1"
         defaultValue="1"
         onChange={daysChangeHandler}
+        style={{ width: '70px' }}
+        className="m-4"
       />
       <Bar options={options} data={{ labels, datasets }} />
     </div>

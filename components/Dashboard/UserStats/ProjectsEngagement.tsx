@@ -1,4 +1,7 @@
 import React from 'react';
+
+import { ListGroup } from 'react-bootstrap';
+
 import ProjectEngagement from './ProjectEngagement';
 
 const ProjectsEngagement = (props: any) => {
@@ -12,13 +15,14 @@ const ProjectsEngagement = (props: any) => {
     <>
       {projects.map((project: any) => {
         return (
-          <ProjectEngagement
-            key={`${props.profileId}-${project}`}
-            project={project}
-            trackings={props.trackings.filter((tracking: any) => {
-              return tracking.project === project;
-            })}
-          />
+          <ListGroup.Item key={`${props.profileId}-${project}`}>
+            <ProjectEngagement
+              project={project}
+              trackings={props.trackings.filter((tracking: any) => {
+                return tracking.project === project;
+              })}
+            />
+          </ListGroup.Item>
         );
       })}
     </>
