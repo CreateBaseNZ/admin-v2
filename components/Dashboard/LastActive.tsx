@@ -28,9 +28,8 @@ ChartJS.register(
 
 const LastActive = (props: any) => {
   const [title, setTitle] = useState('Loading Chart');
-  const [labels, setLabels] = useState<string[]>([
-    moment().subtract(0, 'days').format('ddd, D MMM'),
-  ]);
+  const [enteredDays, setEnteredDays] = useState(7);
+  const [labels, setLabels] = useState<string[]>([]);
   const [datasets, setDatasets] = useState<IDataset[]>([
     { label: 'Active Users', data: [0] },
   ]);
@@ -49,29 +48,23 @@ const LastActive = (props: any) => {
   };
 
   const daysChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEnteredDays(+event.target.value);
+  };
+
+  useEffect(() => {
     const newLabels: string[] = [];
-    for (let i = 0; i < +event.target.value; i++) {
+    for (let i = 0; i < enteredDays; i++) {
       const label = moment().subtract(i, 'days').format('ddd, D MMM');
       newLabels.unshift(label);
     }
     setLabels(newLabels);
-  };
-
-  useEffect(() => {
     const newData: number[] = [];
-    for (let i = 0; i < labels.length; i++) {
+    for (let i = 0; i < newLabels.length; i++) {
       newData[i] = 0;
       for (let j = 0; j < props.profiles.length; j++) {
         const profile = props.profiles[j];
-        let skip = false;
-        for (let k = 0; k < profile.licenses.length; k++) {
-          const license = profile.licenses[k];
-          if (license.group.name === 'CreateBase School') skip = true;
-        }
-        if (skip) continue;
         const lastVisit = moment(profile.date.visited).format('ddd, D MMM');
-        console.log(lastVisit);
-        if (labels[i] === lastVisit) newData[i]++;
+        if (newLabels[i] === lastVisit) newData[i]++;
       }
     }
     setTitle(
@@ -81,7 +74,7 @@ const LastActive = (props: any) => {
       )} active users for the past ${labels.length} days`
     );
     setDatasets([{ label: 'Active Users', data: newData }]);
-  }, [labels, props.profiles]);
+  }, [props.profiles, enteredDays]);
 
   return (
     <div>
@@ -90,12 +83,16 @@ const LastActive = (props: any) => {
         min="1"
         max={7 * 26}
         step="1"
-        defaultValue="1"
+        defaultValue={enteredDays}
         onChange={daysChangeHandler}
         style={{ width: '70px' }}
         className="m-4"
       />
-      <Bar options={options} data={{ labels, datasets }} />
+      <Bar
+        className="px-5 py-3"
+        options={options}
+        data={{ labels, datasets }}
+      />
     </div>
   );
 };

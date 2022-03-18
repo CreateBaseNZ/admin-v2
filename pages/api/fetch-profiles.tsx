@@ -18,9 +18,6 @@ export default async function handler(
   const url1 = process.env.PREFIX_BACKEND + '/profile/retrieve';
   const input1 = { query: {}, option: { account: [] } };
   let data1;
-  console.log(process.env.API_KEY_PRIVATE?.toString());
-  console.log(url1);
-  console.log({ ...keys, input: input1 });
   try {
     data1 = (await axios.post(url1, { ...keys, input: input1 }))['data'];
   } catch (error) {
@@ -68,7 +65,7 @@ export default async function handler(
     licenses.push(license);
   }
   // For each profile assign license
-  const profiles = [];
+  let profiles = [];
   for (let j = 0; j < data1.content.length; j++) {
     const profile = convertToNormalObject(data1.content[j]);
     const profileLicenses = [];
@@ -82,6 +79,14 @@ export default async function handler(
     profile.licenses = profileLicenses;
     profiles.push(profile);
   }
+  profiles = profiles.filter((profile) => {
+    let retain = true;
+    for (let k = 0; k < profile.licenses.length; k++) {
+      const license = profile.licenses[k];
+      if (license.group.name === 'CreateBase School') retain = false;
+    }
+    return retain;
+  });
   // Success handler
   return res.send({ status: 'succeeded', content: profiles });
 }

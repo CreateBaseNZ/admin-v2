@@ -1,44 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 
 import './Dashboard.module.scss';
 
 import LastActive from './LastActive';
 import UsersStats from './UserStats/UsersStats';
 
-import axios from 'axios';
-
-type IData = {
-  status: string;
-  content: Array<any>;
-};
+import NetProjectTime from './NetProjectTime';
+import DailyProjectTime from './UserStats/DailyProjectTime';
+import WeeklyProjectTime from './WeeklyProjectTime';
+import ProfilesContext from '../../store/profiles-context';
+import TrackingsContext from '../../store/trackings-context';
 
 const Dashboard = () => {
-  const [profiles, setProfiles] = useState<any[]>([]);
-  const [trackings, setTrackings] = useState<any[]>([]);
-
-  useEffect(() => {
-    axios
-      .post<IData>('/api/fetch-profiles')
-      .then((data) => {
-        console.log(data.data.content);
-        setProfiles(data.data.content);
-      })
-      .catch((error) => console.log(error));
-  }, []);
-
-  useEffect(() => {
-    axios
-      .post<IData>('/api/fetch-trackings')
-      .then((data) => {
-        console.log(data);
-        setTrackings(data.data.content);
-      })
-      .catch((error) => console.log(error));
-  }, []);
+  const { profiles } = useContext(ProfilesContext);
+  const { trackings } = useContext(TrackingsContext);
 
   return (
     <>
+      <NetProjectTime trackings={trackings} />
       <LastActive profiles={profiles} />
+      <DailyProjectTime trackings={trackings} />
+      <WeeklyProjectTime trackings={trackings} />
       <UsersStats profiles={profiles} trackings={trackings} />
     </>
   );
